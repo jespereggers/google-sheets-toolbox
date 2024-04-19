@@ -1,47 +1,23 @@
-function standardizeAddresses() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var range = sheet.getRange("A2:A" + sheet.getLastRow());
-  var addresses = range.getValues();
-  var apiKey = sheet.getRange("E2").getValue(); // Dein API-Schlüssel in Zelle B1
-
-  for (var i = 0; i < addresses.length; i++) {
-    if (addresses[i][0] !== "") {
-      var formattedAddress = getFormattedAddress(addresses[i][0], apiKey);
-      sheet.getRange(i + 2, 1).setValue(formattedAddress); // Ersetze die originale Adresse durch die formatierte Adresse
-    }
+function VALIDATE_ADDRESS(address) {    
+  if (!address) {
+    return "Keine Adresse angegeben";
   }
-}
 
-function getFormattedAddress(address, apiKey) {
-  var addressEncoded = ""
+    var apiKey = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Konfigurationen").getRange("A2").getValue();
+
   var addressEncoded = encodeURIComponent(address);
-  var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressEncoded + "&key=" + apiKey;
+  var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressEncoded + "&key=" + apiKey + "&language=de";
   
-  var response = UrlFetchApp.fetch(url);
-  var json = JSON.parse(response.getContentText());
-  
-  if (json.status === "OK") {
-    // Setze die formatierte Adresse ein, wenn die Geocodierung erfolgreich war
-    return json.results[0].formatted_address;
-  } else {
-    // Gib die ursprüngliche Adresse zurück, wenn keine Geocodierung möglich war
-    return address;
-  }
-}
-
-
-function generateMenu() {
+  try {
+    var response = UrlFetchApp.fetch(url);
+    var json = JSON.parse(response.getContentText());
     
-  var entries = [{
-    name: "Adress Validator",
-    functionName: "standardizeAddresses"
+    if (json.status === "OK") {
+      return json.results[0].formatted_address;
+    } else {
+      return json.status + (json.error_message ? ": " + json.error_message : "");
+    }
+  } catch (e) {
+    return "Fehler beim Abrufen der Daten: " + e.toString();
   }
-  ];
-  
-  return entries;
-}
-
-
-function onOpen() {
-  SpreadsheetApp.getActiveSpreadsheet().addMenu('Toolbox', generateMenu());
 }
