@@ -3,9 +3,7 @@
  * @customfunction
  */
 
-function GPT(pageContent = "") {
-      var prompt = `Ich suche die Anzahl der Mitarbeiter eines Unternehmens.\nDies ist der Inhalt der Unternehmensinfoseite:\n\n${pageContent}\n\nVersuche, die richtige Mitarbeiterzahl zu ermitteln.\nWichtig: Antworte immmer nur in diesem Format: int.\nAntworte mit 0, wenn du nichts findest. Füge nie irgendwas anderes hinzu. Deine Antwort soll niemals Buchstaben enthalten.`;
-
+function GPT(prompt = "") {
     const url = 'https://api.openai.com/v1/chat/completions';
     const payload = {
         model: 'gpt-3.5-turbo-16k',
