@@ -29,13 +29,13 @@ function SERVICE(companyURL = "") {
 
     var gpt_output = GPT(prompt);
     
-    if (gpt_output != "UNKNOWN") {
+    if (gpt_output != "UNKNOWN" && gpt_output != "") {
       result = gpt_output;
       break;
       }
   }
   // Cache Setter
-  setCache(key, gender_prop);
+  setCache(key, result);
 
   return result;
 }
