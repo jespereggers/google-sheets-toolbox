@@ -1,8 +1,3 @@
-/**
- * Erhalte lesbaren Text einer Internetseite
- * @customfunction
- */
-
 function WEBTEXT(url) {
   try {
     var response = UrlFetchApp.fetch(url);

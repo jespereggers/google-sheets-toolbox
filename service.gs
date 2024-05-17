@@ -9,7 +9,13 @@
 
 
 function SERVICE(companyURL = "") {
+  // Cache Getter
+  const key = ["service", companyURL].join(",");
+  const value = getCache(key);
+  if (value !== null) return value;
+
   var service_urls = [];
+  var result = "UNKNOWN";
 
   var prompt = 'leistungen OR service OR dienstleistungen site:' + companyURL;
 
@@ -24,10 +30,14 @@ function SERVICE(companyURL = "") {
     var gpt_output = GPT(prompt);
     
     if (gpt_output != "UNKNOWN") {
-      return gpt_output;
+      result = gpt_output;
+      break;
       }
   }
-  return "UNKNOWN";
+  // Cache Setter
+  setCache(key, gender_prop);
+
+  return result;
 }
 
 

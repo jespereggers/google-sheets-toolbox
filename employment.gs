@@ -8,7 +8,7 @@
  */
 
 
-function MITARBEITERZAHL(companyURL = "") {
+function EMPLOYMENT(companyURL = "") {
   var company_urls = [];
 
   var prompt = 'leistungen OR service OR dienstleistungen site:' + companyURL;

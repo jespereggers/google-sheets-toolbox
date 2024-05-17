@@ -4,20 +4,19 @@
  * @customfunction
  */
 
-function GENDER(name) {
-  var prompt = "Find out if the following name is male or female: " + name + ". Always respond in this format: 'male' OR 'female'. Never add anything else.";
+
+const GENDER = (name) => {
+  // Cache Getter
+  const key = ["gender", name].join(",");
+  const value = getCache(key);
+  if (value !== null) return value;
+
+  var prompt = "Finde heraus, ob der Name Mann oder Frau ist: " + name + ". Antworte immer entweder Mann ODER Frau. Füge niemals irgendwas hinzu.";
 
   var gender_prop = GPT(prompt);
-
-  if (gender_prop == "male") {
-    return "Mann";
-  }
-  else {
-    if (gender_prop == "female") {
-      return "Frau";
-    }
-    else {
-      return gender_prop;
-    }
-  }
+  
+  // Cache Setter
+  setCache(key, gender_prop);
+  
+  return gender_prop;
 }

@@ -3,7 +3,12 @@
  * @customfunction
  */
 
-function ADDRESSE(address) {
+function ADDRESS(address) {
+  // Cache Getter
+  const key = ["address", address].join(",");
+  const value = getCache(key);
+  if (value !== null) return value;
+
   var api_key = 'AIzaSyC1MSqj1uw4eoXKtFXSbADwjN4RaW0Mp_4'
 
   if (!address) {
@@ -18,6 +23,9 @@ function ADDRESSE(address) {
     var json = JSON.parse(response.getContentText());
     
     if (json.status === "OK") {
+      // Cache Setter
+      setCache(key, gender_prop);
+      
       return json.results[0].formatted_address;
     } else {
       return json.status + (json.error_message ? ": " + json.error_message : "");
